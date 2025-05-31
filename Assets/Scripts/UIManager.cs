@@ -9,19 +9,23 @@ public class UIManager : MonoBehaviour
     public DroneSpawner redSpawner, blueSpawner;
     public TMP_InputField spawnIntervalInputField;
 
-    void Start()
+    private bool currentShowPathState = false;
+
+    private void Start()
     {
+        showPathToggle.isOn = false; // выключено по умолчанию
         ApplySettings();
+        ToggleShowPaths(showPathToggle.isOn);
     }
 
     public void ApplySettings()
     {
         int droneCount = (int)droneSlider.value;
         float droneSpeed = speedSlider.value;
-        bool showPath = showPathToggle.isOn;
 
-        redSpawner.SpawnDrones(droneCount, droneSpeed, showPath);
-        blueSpawner.SpawnDrones(droneCount, droneSpeed, showPath);
+        // передаём текущее состояние showPath
+        redSpawner.SpawnDrones(droneCount, droneSpeed, currentShowPathState);
+        blueSpawner.SpawnDrones(droneCount, droneSpeed, currentShowPathState);
 
         if (float.TryParse(spawnIntervalInputField.text, out float resourcesPerMinute))
         {
@@ -32,6 +36,25 @@ public class UIManager : MonoBehaviour
 
             ResourceManager.Instance.CancelInvoke(nameof(ResourceManager.Instance.Spawn));
             ResourceManager.Instance.InvokeRepeating(nameof(ResourceManager.Instance.Spawn), 1f, interval);
+        }
+    }
+
+    public void ToggleShowPaths(bool show)
+    {
+        currentShowPathState = show;
+
+        foreach (var drone in redSpawner.GetSpawnedDrones())
+        {
+            var pathVisualizer = drone.GetComponent<DronePathVisualizer>();
+            if (pathVisualizer != null)
+                pathVisualizer.SetShowPath(show);
+        }
+
+        foreach (var drone in blueSpawner.GetSpawnedDrones())
+        {
+            var pathVisualizer = drone.GetComponent<DronePathVisualizer>();
+            if (pathVisualizer != null)
+                pathVisualizer.SetShowPath(show);
         }
     }
 }

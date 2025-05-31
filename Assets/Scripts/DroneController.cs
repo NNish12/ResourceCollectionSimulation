@@ -25,8 +25,7 @@ public class DroneController : MonoBehaviour
 
     void Update()
     {
-        UpdatePathTarget();
-        Debug.Log($"Drone {faction} State: {state}");
+        UpdateLookDirection();
 
         switch (state)
         {
@@ -56,7 +55,6 @@ public class DroneController : MonoBehaviour
 
             case DroneState.Returning:
                 float distToHome = Vector3.Distance(transform.position, homeSlot.position);
-
                 MoveTo(homeSlot.position);
 
                 if (distToHome < 0.8f)
@@ -69,31 +67,22 @@ public class DroneController : MonoBehaviour
         }
     }
 
-    private void UpdatePathTarget()
-    {
-        var pathRenderer = GetComponent<PathRenderer>();
-        if (pathRenderer != null)
-        {
-            if (state == DroneState.MovingToResource && targetResource != null)
-                pathRenderer.target = targetResource.transform;
-            else if (state == DroneState.Returning)
-                pathRenderer.target = homeSlot;
-            else
-                pathRenderer.target = null;
-        }
-    }
-
     private void MoveTo(Vector3 destination)
     {
         agent.SetDestination(destination);
+    }
 
-        Vector3 direction = destination - transform.position;
-        if (direction.sqrMagnitude > 0.001f)
+    private void UpdateLookDirection()
+    {
+        Vector3 velocity = agent.velocity;
+
+        if (velocity.sqrMagnitude > 0.01f)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, 0, angle - 90);
         }
     }
+
     private void TryFindResource()
     {
         if (targetResource == null)
@@ -112,7 +101,7 @@ public class DroneController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (targetResource != null)
         {
-            targetResource.Collect(); // Вместо прямого Destroy
+            targetResource.Collect();
             targetResource = null;
             state = DroneState.Returning;
         }

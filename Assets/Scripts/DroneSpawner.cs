@@ -31,18 +31,16 @@ public class DroneSpawner : MonoBehaviour
             droneController.speed = speed;
             droneController.homeSlot = slot;
 
-            var pathRenderer = drone.GetComponent<PathRenderer>();
-            if (pathRenderer != null)
-                pathRenderer.ShowPath = showPath;
+            var pathVisualizer = drone.GetComponent<DronePathVisualizer>();
+            if (pathVisualizer != null)
+                pathVisualizer.SetShowPath(showPath);
 
             spawnedDrones.Add(drone);
         }
+    }
 
-        for (int i = 0; i < Mathf.Min(desiredCount, spawnedDrones.Count); i++)
-        {
-            var pr = spawnedDrones[i].GetComponent<PathRenderer>();
-            if (pr != null)
-                pr.ShowPath = showPath;
-        }
+    public List<GameObject> GetSpawnedDrones()
+    {
+        return spawnedDrones;
     }
 }

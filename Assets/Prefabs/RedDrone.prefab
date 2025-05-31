@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1748789247340635627}
   - component: {fileID: 4677701914795306313}
-  - component: {fileID: -6417647849878574815}
   - component: {fileID: 2010483211193219326}
   - component: {fileID: 736347839309832158}
   - component: {fileID: 5739521233876559909}
   - component: {fileID: 7797973067746679751}
+  - component: {fileID: 536060051533172410}
+  - component: {fileID: 3834631793589133212}
   m_Layer: 0
   m_Name: RedDrone
   m_TagString: Drone
@@ -89,20 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-6417647849878574815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674260372732959540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 243d4bb3e99aa4ea887608563d1b69ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowPath: 0
-  target: {fileID: 0}
 --- !u!50 &2010483211193219326
 Rigidbody2D:
   serializedVersion: 4
@@ -285,3 +272,37 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!195 &536060051533172410
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674260372732959540}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 5.1199994
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 10.239999
+  m_BaseOffset: 5.1199994
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &3834631793589133212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674260372732959540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df421b1e052a44bbaa9ae9a83a641d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

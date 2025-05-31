@@ -19,7 +19,7 @@ public class ResourceManager : MonoBehaviour
 
     public void Spawn()
     {
-        Vector3 pos = new Vector3(Random.Range(-8f, 8f), Random.Range(-4f, 4f), 0);
+        Vector3 pos = new Vector3(Random.Range(-4f, 4f), Random.Range(-4f, 4f), 0);
         var res = Instantiate(resourcePrefab, pos, Quaternion.identity).GetComponent<Resource>();
         resources.Add(res);
     }

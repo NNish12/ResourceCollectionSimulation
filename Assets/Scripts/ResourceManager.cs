@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -20,7 +20,8 @@ public class ResourceManager : MonoBehaviour
     public void Spawn()
     {
         Vector3 pos = new Vector3(Random.Range(-4f, 4f), Random.Range(-4f, 4f), 0);
-        var res = Instantiate(resourcePrefab, pos, Quaternion.identity).GetComponent<Resource>();
+        Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0, 360f));
+        var res = Instantiate(resourcePrefab, pos, rot).GetComponent<Resource>();
         resources.Add(res);
     }
 
@@ -30,6 +31,11 @@ public class ResourceManager : MonoBehaviour
             .Where(r => r != null && !r.IsClaimed)
             .OrderBy(r => Vector3.Distance(pos, r.transform.position))
             .FirstOrDefault();
+    }
+
+    public void RemoveResource(Resource r)
+    {
+        resources.Remove(r);
     }
 
     public void AddResource(DroneController.Faction f)

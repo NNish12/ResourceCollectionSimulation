@@ -15,12 +15,11 @@ public class DronePathVisualizer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default")); // простой материал
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.widthMultiplier = 0.03f;
-        lineRenderer.startColor = Color.cyan;
+        lineRenderer.startColor = Color.cyan; //градиент
         lineRenderer.endColor = Color.green;
     }
-
     private void Update()
     {
         if (!showPath || agent == null || agent.path == null || agent.path.corners.Length < 2)

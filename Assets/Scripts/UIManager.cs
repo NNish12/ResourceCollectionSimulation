@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
 
         if (float.TryParse(spawnIntervalInputField.text, out float resourcesPerMinute))
         {
-            resourcesPerMinute = Mathf.Clamp(resourcesPerMinute, 1f, 600f);
+            resourcesPerMinute = Mathf.Clamp(resourcesPerMinute, 1f, 300f);
             float interval = 60f / resourcesPerMinute;
 
             ResourceManager.Instance.spawnInterval = interval;

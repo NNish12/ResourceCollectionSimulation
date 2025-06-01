@@ -30,26 +30,26 @@ public class ResourceManager : MonoBehaviour
         float y = Random.Range(minY, maxY);
         Vector3 pos = new Vector3(x, y, 0);
         Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0, 360f));
-        var res = Instantiate(resourcePrefab, pos, rot).GetComponent<Resource>();
-        resources.Add(res);
+        var resource = Instantiate(resourcePrefab, pos, rot).GetComponent<Resource>();
+        resources.Add(resource);
     }
 
     public Resource GetNearestAvailable(Vector3 pos)
     {
         return resources
-            .Where(r => r != null && !r.IsClaimed)
+            .Where(resourse => resourse != null && !resourse.IsClaimed)
             .OrderBy(r => Vector3.Distance(pos, r.transform.position))
             .FirstOrDefault();
     }
 
-    public void RemoveResource(Resource r)
+    public void RemoveResource(Resource resource)
     {
-        resources.Remove(r);
+        resources.Remove(resource);
     }
 
-    public void AddResource(DroneController.Faction f)
+    public void AddResource(DroneController.Faction currentFaction)
     {
-        if (f == DroneController.Faction.Red)
+        if (currentFaction == DroneController.Faction.Red)
             redText.text = (++redCount).ToString();
         else
             blueText.text = (++blueCount).ToString();

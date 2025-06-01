@@ -95,6 +95,14 @@ public class DroneController : MonoBehaviour
             }
         }
     }
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+        if (agent != null)
+        {
+            agent.speed = newSpeed;
+        }
+    }
 
     private IEnumerator GatherResource()
     {

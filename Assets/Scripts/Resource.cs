@@ -16,7 +16,6 @@ public class Resource : MonoBehaviour
 
     public void Collect()
     {
-        // Сообщаем менеджеру перед удалением
         ResourceManager.Instance.RemoveResource(this);
         Destroy(gameObject);
     }

@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,9 +14,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        showPathToggle.isOn = false; // выключено по умолчанию
+        currentShowPathState = showPathToggle.isOn;
         ApplySettings();
-        ToggleShowPaths(showPathToggle.isOn);
     }
 
     public void ApplySettings()
@@ -23,9 +23,11 @@ public class UIManager : MonoBehaviour
         int droneCount = (int)droneSlider.value;
         float droneSpeed = speedSlider.value;
 
-        // передаём текущее состояние showPath
+
         redSpawner.SpawnDrones(droneCount, droneSpeed, currentShowPathState);
         blueSpawner.SpawnDrones(droneCount, droneSpeed, currentShowPathState);
+
+        UpdateDroneSpeeds(droneSpeed);
 
         if (float.TryParse(spawnIntervalInputField.text, out float resourcesPerMinute))
         {
@@ -38,19 +40,32 @@ public class UIManager : MonoBehaviour
             ResourceManager.Instance.InvokeRepeating(nameof(ResourceManager.Instance.Spawn), 1f, interval);
         }
     }
-
-    public void ToggleShowPaths(bool show)
+    private void UpdateDroneSpeeds(float newSpeed)
     {
-        currentShowPathState = show;
-
         foreach (var drone in redSpawner.GetSpawnedDrones())
         {
-            var pathVisualizer = drone.GetComponent<DronePathVisualizer>();
-            if (pathVisualizer != null)
-                pathVisualizer.SetShowPath(show);
+            var controller = drone.GetComponent<DroneController>();
+            if (controller != null)
+            {
+                controller.SetSpeed(newSpeed);
+            }
         }
 
         foreach (var drone in blueSpawner.GetSpawnedDrones())
+        {
+            var controller = drone.GetComponent<DroneController>();
+            if (controller != null)
+            {
+                controller.SetSpeed(newSpeed);
+            }
+        }
+    }
+
+    public void ToggleShowPaths(bool show)
+    {
+        var allDrones = redSpawner.GetSpawnedDrones().Concat(blueSpawner.GetSpawnedDrones());
+
+        foreach (var drone in allDrones)
         {
             var pathVisualizer = drone.GetComponent<DronePathVisualizer>();
             if (pathVisualizer != null)

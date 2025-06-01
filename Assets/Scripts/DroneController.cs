@@ -11,9 +11,10 @@ public class DroneController : MonoBehaviour
     public Resource targetResource;
 
     private DroneState state = DroneState.Idle;
+    public DroneState State => state;
     private NavMeshAgent agent;
 
-    private enum DroneState { Idle, MovingToResource, Gathering, Returning }
+    public enum DroneState { Idle, MovingToResource, Gathering, Returning }
 
     private void Start()
     {

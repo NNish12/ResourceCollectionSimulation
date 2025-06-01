@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // private readonly string Horizontal = "Horizontal";
-    // private readonly string Vertical = "Vertical";
-
     public float followSpeed = 5f;
 
     public float defaultZoom;
@@ -13,6 +10,7 @@ public class CameraController : MonoBehaviour
 
     private Transform currentTarget = null;
     private Vector3 defaultPosition;
+    public DroneStateDisplay stateDisplay;
     private float lastClickTime = 0f;
     private float doubleClickThreshold = 0.3f;
 
@@ -74,10 +72,17 @@ public class CameraController : MonoBehaviour
                 if (hit.collider != null && hit.collider.CompareTag("Drone"))
                 {
                     currentTarget = hit.transform;
+
+                    DroneController drone = currentTarget.GetComponent<DroneController>();
+                    if (drone != null)
+                    {
+                        stateDisplay.SetDrone(drone);
+                    }
                 }
                 else
                 {
                     currentTarget = null;
+                    stateDisplay.ClearDrone();
                 }
             }
 

@@ -50,15 +50,13 @@
 ![Скриншот](Gifs/FlameOfTurbine.gif)
 
 ```csharp
-float speed = agent.CurrentVelocity;
-float normalizedSpeed = Mathf.Clamp01(speed / maxSpeed);
-float targetLifetime = normalizedSpeed > minSpeedThreshold ? normalizedSpeed * maxLifetime : 0f;
-
-foreach (var trail in engineTrails)
-{
-    var main = trail.main;
-    main.startLifetime = new ParticleSystem.MinMaxCurve(targetLifetime);
-}
+        foreach (var trail in engineTrails)
+        {
+            var main = trail.main;
+            float currentLifetime = main.startLifetime.constant;
+            float newLifetime = Mathf.Lerp(currentLifetime, targetLifetime, Time.deltaTime * fadeSpeed);
+            main.startLifetime = new ParticleSystem.MinMaxCurve(newLifetime);
+        }
 ```
 
 ## Компоненты / Скрипты

@@ -24,6 +24,7 @@ public class DroneController : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         agent.speed = speed;
+        agent.avoidancePriority = Random.Range(30, 70);
     }
 
     void Update()

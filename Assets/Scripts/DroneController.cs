@@ -10,8 +10,10 @@ public class DroneController : MonoBehaviour
     public Transform homeSlot;
     public Resource targetResource;
 
+
     private DroneState state = DroneState.Idle;
     public DroneState State => state;
+    public float CurrentVelocity => agent.velocity.magnitude; //текущая скорость дрона
     private NavMeshAgent agent;
 
     public enum DroneState { Idle, MovingToResource, Gathering, Returning }

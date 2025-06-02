@@ -15,13 +15,11 @@
 - Подсчёт и отображение собранных ресурсов по фракциям
 - Настройка скорости дронов (`agent.speed`)
 - Пользователь задаёт желаемое количество ресурсов в интервале 10 секунд интервал генерации = `10 / количество`
-
 ![Превью симуляции](Gifs/startgame.gif)
 
 - Зум на дрона по двойному клику  
 - Сброс камеры по двойному клику на пустую область
 - При выборе дрона его текущее состояние отображается под счетчиком очков
-
 ![Превью симуляции](Gifs/camerazoom.gif)
 
 - Дроны используют `NavMeshAgent` и ограниченную запечённую зону полёта со стенками
@@ -30,7 +28,29 @@
 ![Превью симуляции](Gifs/simulation.gif)
 
 ---
+## Particle System (Турбины)
 
+- **Поддержка нескольких турбин**  
+  Скрипт использует массив `ParticleSystem[]`, что позволяет управлять сразу несколькими шлейфами (например, для дронов с двумя или четырьмя двигателями).
+
+- **Адаптация к скорости**  
+  Значение `startLifetime` у каждой системы частиц изменяется пропорционально текущей скорости дрона (полет/остановка с использованием `agent.velocity.magnitude`)
+
+- **Порог отключения шлейфа**  
+  Если скорость дрона опускается ниже значения `minSpeedThreshold`, длина шлейфа (`startLifetime`) интерполируется к `0`, визуально отключая двигатель.
+![Скриншот](Gifs/FlameOfTurbine.gif)
+
+```csharp
+float speed = agent.CurrentVelocity;
+float normalizedSpeed = Mathf.Clamp01(speed / maxSpeed);
+float targetLifetime = normalizedSpeed > minSpeedThreshold ? normalizedSpeed * maxLifetime : 0f;
+
+foreach (var trail in engineTrails)
+{
+    var main = trail.main;
+    main.startLifetime = new ParticleSystem.MinMaxCurve(targetLifetime);
+}
+```
 ## Компоненты / Скрипты
 
 ### `DroneController`
@@ -38,7 +58,6 @@
 - Состояния: `Idle`, `MovingToResource`, `Gathering`, `Returning`
 - Самостоятельно ищет ближайший ресурс, перемещается к нему, собирает и возвращает на базу
 - Использует `NavMeshAgent` для перемещения и поворота
-
 ![Скриншот сетки](Gifs/bake.png)
 
 ### `DroneSpawner`
